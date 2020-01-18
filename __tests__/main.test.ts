@@ -1,27 +1,50 @@
 import {wait} from '../src/wait'
+import io from '@actions/io'
+import fs from 'fs'
 import * as process from 'process'
 import * as cp from 'child_process'
 import * as path from 'path'
 
-test('throws invalid number', async () => {
-  const input = parseInt('foo', 10)
-  await expect(wait(input)).rejects.toThrow('milliseconds not a number')
-})
+const tempPath = path.join(__dirname, 'runner', 'temp')
+const cachePath = path.join(__dirname, 'runner', 'cache')
 
-test('wait 500 ms', async () => {
-  const start = new Date()
-  await wait(500)
-  const end = new Date()
-  var delta = Math.abs(end.getTime() - start.getTime())
-  expect(delta).toBeGreaterThan(450)
-})
+process.env['RUNNER_TEMP'] = tempPath
+process.env['RUNNER_TOOL_CACHE'] = cachePath
 
-// shows how the runner will run a javascript action with env / stdout protocol
-test('test runs', () => {
-  process.env['INPUT_MILLISECONDS'] = '500'
-  const ip = path.join(__dirname, '..', 'lib', 'main.js')
-  const options: cp.ExecSyncOptions = {
-    env: process.env
-  }
-  console.log(cp.execSync(`node ${ip}`, options).toString())
+import * as installer from '../src/installer'
+
+const IS_WINDOWS = process.platform === 'win32'
+
+describe('installer tests', () => {
+  beforeAll(async () => {
+    await io.rmRF(tempPath)
+    await io.rmRF(cachePath)
+  }, 100000)
+
+  afterAll(async () => {
+    await io.rmRF(tempPath)
+    await io.rmRF(cachePath)
+  }, 100000)
+
+  it('Getting azcopy is installed', async () => {
+    await installer.getAzCopy('v10')
+    const targetDir = cachePath
+
+    expect(fs.existsSync(`${targetDir}.complete`)).toBe(true)
+    if (IS_WINDOWS) {
+      expect(fs.existsSync(path.join(targetDir, 'azcopy.exe'))).toBe(true)
+    } else {
+      expect(fs.existsSync(path.join(targetDir, 'azcopy'))).toBe(true)
+    }
+  }, 100000)
+
+  it('Unsupported version raise error', async () => {
+    let thrown = false
+    try {
+      await installer.getAzCopy('v7')
+    } catch {
+      thrown = true
+    }
+    expect(thrown).toBe(true)
+  }, 100000)
 })
