@@ -1,8 +1,8 @@
 {
-  "name": "typescript-action",
+  "name": "install-azcopy-action",
   "version": "0.0.0",
   "private": true,
-  "description": "TypeScript template action",
+  "description": "install azcopy action",
   "main": "lib/main.js",
   "scripts": {
     "build": "tsc",
@@ -15,14 +15,15 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/actions/typescript-action.git"
+    "url": "git+https://github.com/kheiakiyama/install-azcopy-action.git"
   },
   "keywords": [
     "actions",
-    "node",
+    "azcopy",
+    "install",
     "setup"
   ],
-  "author": "YourNameOrOrganization",
+  "author": "kheiakiyama",
   "license": "MIT",
   "dependencies": {
     "@actions/core": "^1.2.0"
