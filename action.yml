@@ -1,10 +1,13 @@
-name: 'Your name here'
-description: 'Provide a description here'
-author: 'Your name or organization here'
+name: 'Install azcopy'
+description: 'Install azcopy and add it to PATH'
+author: 'kheiakiyama'
 inputs:
-  myInput:              # change this
-    description: 'input description here'
-    default: 'default value if applicable'
+  version:
+    description: 'azcopy version to download. (currently can set `v10` only'
+    default: 'v10'
+branding:
+  icon: 'triangle'  
+  color: 'blue'
 runs:
   using: 'node12'
   main: 'dist/index.js'
