@@ -11,6 +11,11 @@ steps:
 - run: azcopy --source {SOURCE} --destination {DEST} --dest-key ${{ secrets.STORAGE_KEY }} --recursive --set-content-type
 ```
 
+install-azcopy-action is tested below.
+- ubuntu-latest
+- macOS-latest
+- windows-latest
+
 # Develop
 
 See [develop-references.yml](develop-references.yml)
