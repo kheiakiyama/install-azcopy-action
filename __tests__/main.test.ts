@@ -1,8 +1,6 @@
-import {wait} from '../src/wait'
-import io from '@actions/io'
-import fs from 'fs'
+import * as io from '@actions/io'
+import * as fs from 'fs'
 import * as process from 'process'
-import * as cp from 'child_process'
 import * as path from 'path'
 
 const tempPath = path.join(__dirname, 'runner', 'temp')
@@ -30,7 +28,6 @@ describe('installer tests', () => {
     await installer.getAzCopy('v10')
     const targetDir = cachePath
 
-    expect(fs.existsSync(`${targetDir}.complete`)).toBe(true)
     if (IS_WINDOWS) {
       expect(fs.existsSync(path.join(targetDir, 'azcopy.exe'))).toBe(true)
     } else {
