@@ -8,7 +8,7 @@
 steps:
 - uses: actions/checkout@v2
 - uses: kheiakiyama/install-azcopy@v1
-- run: azcopy --source {SOURCE} --destination {DEST} --dest-key $STORAGE_KEY --recursive --set-content-type
+- run: azcopy --source {SOURCE} --destination {DEST} --dest-key ${{ secrets.STORAGE_KEY }} --recursive --set-content-type
 ```
 
 # Develop
