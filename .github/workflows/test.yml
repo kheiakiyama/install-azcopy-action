@@ -24,4 +24,4 @@ jobs:
     - uses: ./
       with: 
         version: 'v10'
-    - run: azcopy -h # azcopy --version
+    - run: azcopy --version | grep 'azcopy'
