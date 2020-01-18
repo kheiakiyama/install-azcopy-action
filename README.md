@@ -7,7 +7,9 @@
 ```
 steps:
 - uses: actions/checkout@v2
-- uses: kheiakiyama/install-azcopy@v1
+- uses: kheiakiyama/install-azcopy-action@v1
+  with:
+    version: 'v10'
 - run: azcopy --source {SOURCE} --destination {DEST} --dest-key ${{ secrets.STORAGE_KEY }} --recursive --set-content-type
 ```
 
