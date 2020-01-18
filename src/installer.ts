@@ -14,14 +14,14 @@ export async function getAzCopy(version: string): Promise<void> {
 
     throw new Error(`Failed to download version ${version}: ${error}`)
   }
-  let extPath: string | null = null
+  let toolPath: string | null = null
   if (IS_WINDOWS) {
-    extPath = await tc.extractZip(downloadPath)
+    const extPath = await tc.extractZip(downloadPath)
+    toolPath = await tc.cacheDir(extPath, 'azcopy.exe', version)
   } else {
-    extPath = await tc.extractTar(downloadPath)
+    const extPath = await tc.extractTar(downloadPath)
+    toolPath = await tc.cacheDir(extPath, 'azcopy', version)
   }
-
-  const toolPath = await tc.cacheDir(extPath, 'azcopy', version)
   core.addPath(toolPath)
 }
 

@@ -4359,14 +4359,15 @@ function getAzCopy(version) {
             core.debug(error);
             throw new Error(`Failed to download version ${version}: ${error}`);
         }
-        let extPath = null;
+        let toolPath = null;
         if (IS_WINDOWS) {
-            extPath = yield tc.extractZip(downloadPath);
+            const extPath = yield tc.extractZip(downloadPath);
+            toolPath = yield tc.cacheDir(extPath, 'azcopy.exe', version);
         }
         else {
-            extPath = yield tc.extractTar(downloadPath);
+            const extPath = yield tc.extractTar(downloadPath);
+            toolPath = yield tc.cacheDir(extPath, 'azcopy', version);
         }
-        const toolPath = yield tc.cacheDir(extPath, 'azcopy', version);
         core.addPath(toolPath);
     });
 }
