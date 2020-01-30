@@ -27,7 +27,7 @@ jobs:
         cred: ${{ secrets.AZURE_CREDENTIALS }}
     - run: |
         azcopy --version | grep 'azcopy'
-        azcopy --source https://$AZCOPY_TEST_STORAGE.blob.core.windows.net/$AZCOPY_TEST_CONTAINER/$AZCOPY_TEST_BLOB_SOURCE --destination https://$AZCOPY_TEST_STORAGE.blob.core.windows.net/$AZCOPY_TEST_CONTAINER/$AZCOPY_TEST_BLOB_DEST --overwrite
+        azcopy --source https://${AZCOPY_TEST_STORAGE}.blob.core.windows.net/${AZCOPY_TEST_CONTAINER_/${AZCOPY_TEST_BLOB_SOURCE} --destination https://${AZCOPY_TEST_STORAGE}.blob.core.windows.net/${AZCOPY_TEST_CONTAINER}/${AZCOPY_TEST_BLOB_DEST} --overwrite
       env:
         AZCOPY_TEST_STORAGE: "installazcopyactiontest"
         AZCOPY_TEST_CONTAINER: "githubflow"
