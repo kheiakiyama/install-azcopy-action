@@ -24,4 +24,6 @@ jobs:
     - uses: ./
       with: 
         version: 'v10'
-    - run: azcopy --version | grep 'azcopy'
+        cred: ${{ secrets.AZURE_CREDENTIALS }}
+    - run: |
+        azcopy --version | grep 'azcopy'

@@ -1,7 +1,7 @@
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 
-export async function getAzCopy(version: string): Promise<void> {
+export async function getAzCopy(version: string): Promise<string> {
   if (version !== 'v10') {
     throw new Error('version must be set `v10`.')
   }
@@ -23,6 +23,7 @@ export async function getAzCopy(version: string): Promise<void> {
     toolPath = await tc.cacheDir(extPath, 'azcopy', version)
   }
   core.addPath(toolPath)
+  return toolPath
 }
 
 const IS_WINDOWS = process.platform === 'win32'
