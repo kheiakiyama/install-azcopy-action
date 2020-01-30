@@ -27,7 +27,7 @@ async function run(): Promise<void> {
       'Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.'
     )
   }
-  core.exportVariable('AZCOPY_SPA_CERT_PASSWORD', servicePrincipalKey)
+  core.exportVariable('AZCOPY_SPA_CLIENT_SECRET', servicePrincipalKey)
   try {
     await exec.exec(
       `"${azcopyPath}" login --service-principal --application-id ${servicePrincipalId} --tenant-id ${tenantId}`,
