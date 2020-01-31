@@ -22,6 +22,7 @@ export async function getAzCopy(version: string): Promise<string> {
     const extPath = await tc.extractTar(downloadPath)
     toolPath = await tc.cacheDir(extPath, 'azcopy', version)
   }
+  core.debug(toolPath)
   core.addPath(toolPath)
   return toolPath
 }
