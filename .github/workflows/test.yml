@@ -24,10 +24,13 @@ jobs:
     - run: |
         azcopy --version | grep 'azcopy'
         which azcopy
+        rm azcopy
     - uses: ./
       with: 
         version: 'v10'
         cred: ${{ secrets.AZURE_CREDENTIALS }}
+      env:
+        ACTIONS_RUNNER_DEBUG: true
     - run: |
         azcopy --version | grep 'azcopy'
         touch testfile
