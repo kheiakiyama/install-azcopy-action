@@ -23,7 +23,7 @@ jobs:
     - uses: actions/checkout@v2
     - run: |
         azcopy --version | grep 'azcopy'
-        which azcopy
+        which azcopy | rm
     - uses: ./
       with: 
         version: 'v10'
