@@ -25,7 +25,7 @@ describe('installer tests', () => {
   }, 100000)
 
   it('Getting azcopy is installed', async () => {
-    await installer.getAzCopy('v10')
+    await installer.installAzCopy('v10')
     const targetDir = cachePath
 
     if (IS_WINDOWS) {
@@ -38,7 +38,7 @@ describe('installer tests', () => {
   it('Unsupported version raise error', async () => {
     let thrown = false
     try {
-      await installer.getAzCopy('v7')
+      await installer.installAzCopy('v7')
     } catch {
       thrown = true
     }

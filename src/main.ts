@@ -8,7 +8,7 @@ async function run(): Promise<void> {
   let azcopyPath = ''
   try {
     const version = core.getInput('version', {required: true})
-    azcopyPath = await installer.getAzCopy(version)
+    azcopyPath = await installer.installAzCopy(version)
   } catch (error) {
     core.setFailed(error.message)
     return

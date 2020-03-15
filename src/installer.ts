@@ -1,7 +1,7 @@
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 
-export async function getAzCopy(version: string): Promise<string> {
+export async function installAzCopy(version: string): Promise<string> {
   if (version !== 'v10') {
     throw new Error('version must be set `v10`.')
   }
