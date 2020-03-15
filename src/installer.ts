@@ -1,7 +1,9 @@
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
+import * as path from 'path'
+import * as fs from 'fs'
 
-export async function getAzCopy(version: string): Promise<void> {
+export async function installAzCopy(version: string): Promise<string> {
   if (version !== 'v10') {
     throw new Error('version must be set `v10`.')
   }
@@ -14,15 +16,33 @@ export async function getAzCopy(version: string): Promise<void> {
 
     throw new Error(`Failed to download version ${version}: ${error}`)
   }
+  const extPath = IS_WINDOWS
+    ? await tc.extractZip(downloadPath)
+    : await tc.extractTar(downloadPath)
+  const files = fs.readdirSync(extPath, {withFileTypes: true})
+  const toolSrcPath = path.join(extPath, files[0].name) //first file has azcopy
+  let azCopyFileName: string | null = null
   let toolPath: string | null = null
   if (IS_WINDOWS) {
-    const extPath = await tc.extractZip(downloadPath)
-    toolPath = await tc.cacheDir(extPath, 'azcopy.exe', version)
+    toolPath = await tc.cacheFile(
+      path.join(toolSrcPath, 'azcopy.exe'),
+      `azcopy_${version}.exe`,
+      `azcopy_${version}.exe`,
+      version
+    )
+    azCopyFileName = path.join(toolPath, `azcopy_${version}.exe`)
   } else {
-    const extPath = await tc.extractTar(downloadPath)
-    toolPath = await tc.cacheDir(extPath, 'azcopy', version)
+    azCopyFileName = toolPath = await tc.cacheFile(
+      path.join(toolSrcPath, 'azcopy'),
+      `azcopy_${version}`,
+      `azcopy_${version}`,
+      version
+    )
+    azCopyFileName = path.join(toolPath, `azcopy_${version}`)
   }
   core.addPath(toolPath)
+  core.debug(azCopyFileName)
+  return azCopyFileName
 }
 
 const IS_WINDOWS = process.platform === 'win32'
