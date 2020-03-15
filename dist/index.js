@@ -12835,6 +12835,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const tc = __importStar(__webpack_require__(533));
 const core = __importStar(__webpack_require__(470));
 const exec = __importStar(__webpack_require__(986));
+const path = __importStar(__webpack_require__(622));
 function installAzCopy(version) {
     return __awaiter(this, void 0, void 0, function* () {
         if (version !== 'v10') {
@@ -12862,10 +12863,10 @@ function installAzCopy(version) {
         try {
             core.debug('alias setting started');
             if (IS_WINDOWS) {
-                yield exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {});
+                yield exec.exec(`doskey azcopy.exe='${path.join(toolPath, 'azcopy.exe')}'`, [], {});
             }
             else {
-                yield exec.exec(`alias azcopy='${toolPath}'`, [], {});
+                yield exec.exec(`alias azcopy='${path.join(toolPath, 'azcopy')}'`, [], {});
             }
             core.debug('alias setting finished');
         }

@@ -28,7 +28,11 @@ export async function installAzCopy(version: string): Promise<string> {
   try {
     core.debug('alias setting started')
     if (IS_WINDOWS) {
-      await exec.exec(`doskey azcopy.exe='${path.join(toolPath, 'azcopy.exe')}'`, [], {})
+      await exec.exec(
+        `doskey azcopy.exe='${path.join(toolPath, 'azcopy.exe')}'`,
+        [],
+        {}
+      )
     } else {
       await exec.exec(`alias azcopy='${path.join(toolPath, 'azcopy')}'`, [], {})
     }
