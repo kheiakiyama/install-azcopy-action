@@ -12834,7 +12834,6 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const tc = __importStar(__webpack_require__(533));
 const core = __importStar(__webpack_require__(470));
-const exec = __importStar(__webpack_require__(986));
 const path = __importStar(__webpack_require__(622));
 const fs = __importStar(__webpack_require__(747));
 function installAzCopy(version) {
@@ -12857,28 +12856,28 @@ function installAzCopy(version) {
         const files = fs.readdirSync(extPath, { withFileTypes: true });
         let toolPath = path.join(extPath, files[0].name); //first file has azcopy
         if (IS_WINDOWS) {
-            //const cache = await tc.cacheDir(toolPath, 'azcopy.exe', version)
-            toolPath = path.join(toolPath, 'azcopy.exe');
+            const cache = yield tc.cacheDir(toolPath, 'azcopy.exe', version);
+            toolPath = path.join(cache, 'azcopy.exe');
         }
         else {
-            //const cache = await tc.cacheDir(toolPath, 'azcopy', version)
-            toolPath = path.join(toolPath, 'azcopy');
+            const cache = yield tc.cacheDir(toolPath, 'azcopy', version);
+            toolPath = path.join(cache, 'azcopy');
         }
         core.debug(toolPath);
-        try {
-            core.debug('alias setting started');
-            if (IS_WINDOWS) {
-                yield exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {});
-            }
-            else {
-                yield exec.exec(`alias azcopy='${toolPath}'`, [], {});
-            }
-            core.debug('alias setting finished');
-        }
-        catch (error) {
-            core.error(`set alias failed. message:${error.message} toolPath:${toolPath}`);
-            core.setFailed(error.message);
-        }
+        // try {
+        //   core.debug('alias setting started')
+        //   if (IS_WINDOWS) {
+        //     await exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {})
+        //   } else {
+        //     await exec.exec(`alias azcopy='${toolPath}'`, [], {})
+        //   }
+        //   core.debug('alias setting finished')
+        // } catch (error) {
+        //   core.error(
+        //     `set alias failed. message:${error.message} toolPath:${toolPath}`
+        //   )
+        //   core.setFailed(error.message)
+        // }
         return toolPath;
     });
 }

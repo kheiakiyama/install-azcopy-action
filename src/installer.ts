@@ -1,6 +1,5 @@
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
-import * as exec from '@actions/exec'
 import * as path from 'path'
 import * as fs from 'fs'
 
@@ -23,27 +22,27 @@ export async function installAzCopy(version: string): Promise<string> {
   const files = fs.readdirSync(extPath, {withFileTypes: true})
   let toolPath = path.join(extPath, files[0].name) //first file has azcopy
   if (IS_WINDOWS) {
-    //const cache = await tc.cacheDir(toolPath, 'azcopy.exe', version)
-    toolPath = path.join(toolPath, 'azcopy.exe')
+    const cache = await tc.cacheDir(toolPath, 'azcopy.exe', version)
+    toolPath = path.join(cache, 'azcopy.exe')
   } else {
-    //const cache = await tc.cacheDir(toolPath, 'azcopy', version)
-    toolPath = path.join(toolPath, 'azcopy')
+    const cache = await tc.cacheDir(toolPath, 'azcopy', version)
+    toolPath = path.join(cache, 'azcopy')
   }
   core.debug(toolPath)
-  try {
-    core.debug('alias setting started')
-    if (IS_WINDOWS) {
-      await exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {})
-    } else {
-      await exec.exec(`alias azcopy='${toolPath}'`, [], {})
-    }
-    core.debug('alias setting finished')
-  } catch (error) {
-    core.error(
-      `set alias failed. message:${error.message} toolPath:${toolPath}`
-    )
-    core.setFailed(error.message)
-  }
+  // try {
+  //   core.debug('alias setting started')
+  //   if (IS_WINDOWS) {
+  //     await exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {})
+  //   } else {
+  //     await exec.exec(`alias azcopy='${toolPath}'`, [], {})
+  //   }
+  //   core.debug('alias setting finished')
+  // } catch (error) {
+  //   core.error(
+  //     `set alias failed. message:${error.message} toolPath:${toolPath}`
+  //   )
+  //   core.setFailed(error.message)
+  // }
   return toolPath
 }
 
