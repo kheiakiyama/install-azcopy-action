@@ -12854,18 +12854,21 @@ function installAzCopy(version) {
             ? yield tc.extractZip(downloadPath)
             : yield tc.extractTar(downloadPath);
         const files = fs.readdirSync(extPath, { withFileTypes: true });
-        let toolPath = path.join(extPath, files[0].name); //first file has azcopy
+        const toolSrcPath = path.join(extPath, files[0].name); //first file has azcopy
+        let azCopyFileName = null;
+        let toolPath = null;
         if (IS_WINDOWS) {
-            toolPath = path.join(toolPath, 'azcopy.exe');
-            toolPath = yield tc.cacheFile(toolPath, `azcopy_${version}.exe`, `azcopy_${version}.exe`, version);
+            toolPath = yield tc.cacheFile(path.join(toolSrcPath, 'azcopy.exe'), `azcopy_${version}.exe`, `azcopy_${version}.exe`, version);
+            azCopyFileName = path.join(toolPath, `azcopy_${version}.exe`);
         }
         else {
-            toolPath = path.join(toolPath, 'azcopy');
-            toolPath = yield tc.cacheFile(toolPath, `azcopy_${version}`, `azcopy_${version}`, version);
+            azCopyFileName =
+                toolPath = yield tc.cacheFile(path.join(toolSrcPath, 'azcopy'), `azcopy_${version}`, `azcopy_${version}`, version);
+            azCopyFileName = path.join(toolPath, `azcopy_${version}`);
         }
         core.addPath(toolPath);
-        core.debug(toolPath);
-        return toolPath;
+        core.debug(azCopyFileName);
+        return azCopyFileName;
     });
 }
 exports.installAzCopy = installAzCopy;
