@@ -1,6 +1,7 @@
 import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
+import * as path from 'path'
 
 export async function installAzCopy(version: string): Promise<string> {
   if (version !== 'v10') {
@@ -27,9 +28,9 @@ export async function installAzCopy(version: string): Promise<string> {
   try {
     core.debug('alias setting started')
     if (IS_WINDOWS) {
-      await exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {})
+      await exec.exec(`doskey azcopy.exe='${path.join(toolPath, 'azcopy.exe')}'`, [], {})
     } else {
-      await exec.exec(`alias azcopy='${toolPath}'`, [], {})
+      await exec.exec(`alias azcopy='${path.join(toolPath, 'azcopy')}'`, [], {})
     }
     core.debug('alias setting finished')
   } catch (error) {
