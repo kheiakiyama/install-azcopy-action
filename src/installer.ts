@@ -23,11 +23,11 @@ export async function installAzCopy(version: string): Promise<string> {
   const files = fs.readdirSync(extPath, {withFileTypes: true})
   let toolPath = path.join(extPath, files[0].name) //first file has azcopy
   if (IS_WINDOWS) {
-    const cache = await tc.cacheDir(toolPath, 'azcopy.exe', version)
-    toolPath = path.join(cache, 'azcopy.exe')
+    //const cache = await tc.cacheDir(toolPath, 'azcopy.exe', version)
+    toolPath = path.join(toolPath, 'azcopy.exe')
   } else {
-    const cache = await tc.cacheDir(toolPath, 'azcopy', version)
-    toolPath = path.join(cache, 'azcopy')
+    //const cache = await tc.cacheDir(toolPath, 'azcopy', version)
+    toolPath = path.join(toolPath, 'azcopy')
   }
   core.debug(toolPath)
   try {
