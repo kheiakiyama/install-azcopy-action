@@ -12864,6 +12864,7 @@ function installAzCopy(version) {
             toolPath = path.join(cache, 'azcopy');
         }
         core.debug(toolPath);
+        core.addPath(toolPath);
         // try {
         //   core.debug('alias setting started')
         //   if (IS_WINDOWS) {

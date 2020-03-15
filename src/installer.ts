@@ -29,6 +29,7 @@ export async function installAzCopy(version: string): Promise<string> {
     toolPath = path.join(cache, 'azcopy')
   }
   core.debug(toolPath)
+  core.addPath(toolPath)
   // try {
   //   core.debug('alias setting started')
   //   if (IS_WINDOWS) {
