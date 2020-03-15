@@ -30,6 +30,7 @@ export async function installAzCopy(version: string): Promise<string> {
     } else {
       await exec.exec(`alias azcopy='${toolPath}'`, [], {})
     }
+    core.debug('alias setting finished')
   } catch (error) {
     core.error('set alias failed.')
     core.setFailed(error.message)

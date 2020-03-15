@@ -12866,6 +12866,7 @@ function installAzCopy(version) {
             else {
                 yield exec.exec(`alias azcopy='${toolPath}'`, [], {});
             }
+            core.debug('alias setting finished');
         }
         catch (error) {
             core.error('set alias failed.');
