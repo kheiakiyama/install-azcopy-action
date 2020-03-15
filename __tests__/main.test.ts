@@ -25,14 +25,8 @@ describe('installer tests', () => {
   }, 100000)
 
   it('Getting azcopy is installed', async () => {
-    await installer.installAzCopy('v10')
-    const targetDir = cachePath
-
-    if (IS_WINDOWS) {
-      expect(fs.existsSync(path.join(targetDir, 'azcopy.exe'))).toBe(true)
-    } else {
-      expect(fs.existsSync(path.join(targetDir, 'azcopy'))).toBe(true)
-    }
+    const azCopyPath = await installer.installAzCopy('v10')
+    expect(fs.existsSync(azCopyPath)).toBe(true)
   }, 100000)
 
   it('Unsupported version raise error', async () => {

@@ -12836,6 +12836,7 @@ const tc = __importStar(__webpack_require__(533));
 const core = __importStar(__webpack_require__(470));
 const exec = __importStar(__webpack_require__(986));
 const path = __importStar(__webpack_require__(622));
+const fs = __importStar(__webpack_require__(747));
 function installAzCopy(version) {
     return __awaiter(this, void 0, void 0, function* () {
         if (version !== 'v10') {
@@ -12850,15 +12851,17 @@ function installAzCopy(version) {
             core.debug(error);
             throw new Error(`Failed to download version ${version}: ${error}`);
         }
-        let toolPath = null;
+        const extPath = IS_WINDOWS
+            ? yield tc.extractZip(downloadPath)
+            : yield tc.extractTar(downloadPath);
+        const files = fs.readdirSync(extPath, { withFileTypes: true });
+        let toolPath = path.join(extPath, files[0].name); //first file has azcopy
         if (IS_WINDOWS) {
-            const extPath = yield tc.extractZip(downloadPath);
-            const cache = yield tc.cacheDir(extPath, 'azcopy.exe', version);
+            const cache = yield tc.cacheDir(toolPath, 'azcopy.exe', version);
             toolPath = path.join(cache, 'azcopy.exe');
         }
         else {
-            const extPath = yield tc.extractTar(downloadPath);
-            const cache = yield tc.cacheDir(extPath, 'azcopy', version);
+            const cache = yield tc.cacheDir(toolPath, 'azcopy', version);
             toolPath = path.join(cache, 'azcopy');
         }
         core.debug(toolPath);

@@ -2,6 +2,7 @@ import * as tc from '@actions/tool-cache'
 import * as core from '@actions/core'
 import * as exec from '@actions/exec'
 import * as path from 'path'
+import * as fs from 'fs'
 
 export async function installAzCopy(version: string): Promise<string> {
   if (version !== 'v10') {
@@ -16,14 +17,16 @@ export async function installAzCopy(version: string): Promise<string> {
 
     throw new Error(`Failed to download version ${version}: ${error}`)
   }
-  let toolPath: string | null = null
+  const extPath = IS_WINDOWS
+    ? await tc.extractZip(downloadPath)
+    : await tc.extractTar(downloadPath)
+  const files = fs.readdirSync(extPath, {withFileTypes: true})
+  let toolPath = path.join(extPath, files[0].name) //first file has azcopy
   if (IS_WINDOWS) {
-    const extPath = await tc.extractZip(downloadPath)
-    const cache = await tc.cacheDir(extPath, 'azcopy.exe', version)
+    const cache = await tc.cacheDir(toolPath, 'azcopy.exe', version)
     toolPath = path.join(cache, 'azcopy.exe')
   } else {
-    const extPath = await tc.extractTar(downloadPath)
-    const cache = await tc.cacheDir(extPath, 'azcopy', version)
+    const cache = await tc.cacheDir(toolPath, 'azcopy', version)
     toolPath = path.join(cache, 'azcopy')
   }
   core.debug(toolPath)
