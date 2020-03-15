@@ -27,7 +27,7 @@ jobs:
     - uses: ./
       with: 
         version: 'v10'
-        cred: ${{ secrets.AZURE_CREDENTIALS }}
+        creds: ${{ secrets.AZURE_CREDENTIALS }}
       env:
         ACTIONS_RUNNER_DEBUG: true
     - run: |

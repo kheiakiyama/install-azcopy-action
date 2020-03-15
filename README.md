@@ -21,7 +21,7 @@ steps:
 - uses: kheiakiyama/install-azcopy-action@v1
   with:
     version: 'v10'
-    cred: ${{ secrets.AZURE_CREDENTIALS }}
+    creds: ${{ secrets.AZURE_CREDENTIALS }}
 - run: azcopy_v10 --source {SOURCE} --destination {DEST} --recursive --set-content-type
 ```
 
