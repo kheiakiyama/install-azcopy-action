@@ -25,6 +25,7 @@ export async function installAzCopy(version: string): Promise<string> {
   }
   core.debug(toolPath)
   try {
+    core.debug('alias setting started')
     if (IS_WINDOWS) {
       await exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {})
     } else {
@@ -32,7 +33,7 @@ export async function installAzCopy(version: string): Promise<string> {
     }
     core.debug('alias setting finished')
   } catch (error) {
-    core.error('set alias failed.')
+    core.error(`set alias failed. toolPath:${toolPath}`)
     core.setFailed(error.message)
   }
   return toolPath

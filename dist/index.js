@@ -12860,6 +12860,7 @@ function installAzCopy(version) {
         }
         core.debug(toolPath);
         try {
+            core.debug('alias setting started');
             if (IS_WINDOWS) {
                 yield exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {});
             }
@@ -12869,7 +12870,7 @@ function installAzCopy(version) {
             core.debug('alias setting finished');
         }
         catch (error) {
-            core.error('set alias failed.');
+            core.error(`set alias failed. toolPath:${toolPath}`);
             core.setFailed(error.message);
         }
         return toolPath;
