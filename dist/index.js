@@ -2488,7 +2488,7 @@ function run() {
         let azcopyPath = '';
         try {
             const version = core.getInput('version', { required: true });
-            azcopyPath = yield installer.getAzCopy(version);
+            azcopyPath = yield installer.installAzCopy(version);
         }
         catch (error) {
             core.setFailed(error.message);
@@ -2506,7 +2506,7 @@ function run() {
         if (!servicePrincipalId || !servicePrincipalKey || !tenantId) {
             throw new Error('Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.');
         }
-        core.exportVariable('AZCOPY_SPA_CERT_PASSWORD', servicePrincipalKey);
+        core.exportVariable('AZCOPY_SPA_CLIENT_SECRET', servicePrincipalKey);
         try {
             yield exec.exec(`"${azcopyPath}" login --service-principal --application-id ${servicePrincipalId} --tenant-id ${tenantId}`, [], {});
         }
@@ -12834,7 +12834,8 @@ var __importStar = (this && this.__importStar) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const tc = __importStar(__webpack_require__(533));
 const core = __importStar(__webpack_require__(470));
-function getAzCopy(version) {
+const exec = __importStar(__webpack_require__(986));
+function installAzCopy(version) {
     return __awaiter(this, void 0, void 0, function* () {
         if (version !== 'v10') {
             throw new Error('version must be set `v10`.');
@@ -12857,11 +12858,23 @@ function getAzCopy(version) {
             const extPath = yield tc.extractTar(downloadPath);
             toolPath = yield tc.cacheDir(extPath, 'azcopy', version);
         }
-        core.addPath(toolPath);
+        core.debug(toolPath);
+        try {
+            if (IS_WINDOWS) {
+                yield exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {});
+            }
+            else {
+                yield exec.exec(`alias azcopy='${toolPath}'`, [], {});
+            }
+        }
+        catch (error) {
+            core.error('set alias failed.');
+            core.setFailed(error.message);
+        }
         return toolPath;
     });
 }
-exports.getAzCopy = getAzCopy;
+exports.installAzCopy = installAzCopy;
 const IS_WINDOWS = process.platform === 'win32';
 // https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10
 function getDownloadUrl() {
