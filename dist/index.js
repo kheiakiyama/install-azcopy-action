@@ -12853,25 +12853,28 @@ function installAzCopy(version) {
         let toolPath = null;
         if (IS_WINDOWS) {
             const extPath = yield tc.extractZip(downloadPath);
-            toolPath = yield tc.cacheDir(extPath, 'azcopy.exe', version);
+            const cache = yield tc.cacheDir(extPath, 'azcopy.exe', version);
+            toolPath = path.join(cache, 'azcopy.exe');
         }
         else {
             const extPath = yield tc.extractTar(downloadPath);
-            toolPath = yield tc.cacheDir(extPath, 'azcopy', version);
+            const cache = yield tc.cacheDir(extPath, 'azcopy', version);
+            toolPath = path.join(cache, 'azcopy');
         }
         core.debug(toolPath);
         try {
             core.debug('alias setting started');
             if (IS_WINDOWS) {
-                yield exec.exec(`doskey azcopy.exe='${path.join(toolPath, 'azcopy.exe')}'`, [], {});
+                yield exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {});
             }
             else {
-                yield exec.exec(`alias azcopy='${path.join(toolPath, 'azcopy')}'`, [], {});
+                yield exec.exec(`alias azcopy='${toolPath}'`, [], {});
             }
             core.debug('alias setting finished');
         }
         catch (error) {
             core.error(`set alias failed. toolPath:${toolPath}`);
+            yield exec.exec(`ls '${toolPath}'`, [], {});
             core.setFailed(error.message);
         }
         return toolPath;

@@ -19,26 +19,25 @@ export async function installAzCopy(version: string): Promise<string> {
   let toolPath: string | null = null
   if (IS_WINDOWS) {
     const extPath = await tc.extractZip(downloadPath)
-    toolPath = await tc.cacheDir(extPath, 'azcopy.exe', version)
+    const cache = await tc.cacheDir(extPath, 'azcopy.exe', version)
+    toolPath = path.join(cache, 'azcopy.exe')
   } else {
     const extPath = await tc.extractTar(downloadPath)
-    toolPath = await tc.cacheDir(extPath, 'azcopy', version)
+    const cache = await tc.cacheDir(extPath, 'azcopy', version)
+    toolPath = path.join(cache, 'azcopy')
   }
   core.debug(toolPath)
   try {
     core.debug('alias setting started')
     if (IS_WINDOWS) {
-      await exec.exec(
-        `doskey azcopy.exe='${path.join(toolPath, 'azcopy.exe')}'`,
-        [],
-        {}
-      )
+      await exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {})
     } else {
-      await exec.exec(`alias azcopy='${path.join(toolPath, 'azcopy')}'`, [], {})
+      await exec.exec(`alias azcopy='${toolPath}'`, [], {})
     }
     core.debug('alias setting finished')
   } catch (error) {
     core.error(`set alias failed. toolPath:${toolPath}`)
+    await exec.exec(`ls '${toolPath}'`, [], {})
     core.setFailed(error.message)
   }
   return toolPath
