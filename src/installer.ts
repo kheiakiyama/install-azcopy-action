@@ -25,13 +25,18 @@ export async function installAzCopy(version: string): Promise<string> {
     toolPath = path.join(toolPath, 'azcopy.exe')
     toolPath = await tc.cacheFile(
       toolPath,
-      'azcopyV10.exe',
-      'azcopyV10.exe',
+      `azcopy-${version}.exe`,
+      `azcopy-${version}.exe`,
       version
     )
   } else {
     toolPath = path.join(toolPath, 'azcopy')
-    toolPath = await tc.cacheFile(toolPath, 'azcopyV10', 'azcopyV10', version)
+    toolPath = await tc.cacheFile(
+      toolPath,
+      `azcopy-${version}`,
+      `azcopy-${version}`,
+      version
+    )
   }
   core.debug(toolPath)
   //  core.addPath(toolPath)

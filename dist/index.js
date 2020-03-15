@@ -12857,11 +12857,11 @@ function installAzCopy(version) {
         let toolPath = path.join(extPath, files[0].name); //first file has azcopy
         if (IS_WINDOWS) {
             toolPath = path.join(toolPath, 'azcopy.exe');
-            toolPath = yield tc.cacheFile(toolPath, 'azcopyV10.exe', 'azcopyV10.exe', version);
+            toolPath = yield tc.cacheFile(toolPath, `azcopy-${version}.exe`, `azcopy-${version}.exe`, version);
         }
         else {
             toolPath = path.join(toolPath, 'azcopy');
-            toolPath = yield tc.cacheFile(toolPath, 'azcopyV10', 'azcopyV10', version);
+            toolPath = yield tc.cacheFile(toolPath, `azcopy-${version}`, `azcopy-${version}`, version);
         }
         core.debug(toolPath);
         //  core.addPath(toolPath)
