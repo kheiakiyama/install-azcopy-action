@@ -12876,10 +12876,7 @@ function installAzCopy(version) {
             core.debug('alias setting finished');
         }
         catch (error) {
-            core.error(`set alias failed. toolPath:${toolPath}`);
-            yield exec.exec(`ls -l '${extPath}'`, [], {});
-            yield exec.exec(`ls -l '${path.dirname(toolPath)}'`, [], {});
-            yield exec.exec(`ls '${toolPath}'`, [], {});
+            core.error(`set alias failed. message:${error.message} toolPath:${toolPath}`);
             core.setFailed(error.message);
         }
         return toolPath;
