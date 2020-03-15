@@ -38,22 +38,8 @@ export async function installAzCopy(version: string): Promise<string> {
       version
     )
   }
+  core.addPath(path.dirname(toolPath))
   core.debug(toolPath)
-  //  core.addPath(toolPath)
-  // try {
-  //   core.debug('alias setting started')
-  //   if (IS_WINDOWS) {
-  //     await exec.exec(`doskey azcopy.exe='${toolPath}'`, [], {})
-  //   } else {
-  //     await exec.exec(`alias azcopy='${toolPath}'`, [], {})
-  //   }
-  //   core.debug('alias setting finished')
-  // } catch (error) {
-  //   core.error(
-  //     `set alias failed. message:${error.message} toolPath:${toolPath}`
-  //   )
-  //   core.setFailed(error.message)
-  // }
   return toolPath
 }
 
