@@ -24,7 +24,7 @@ async function run(): Promise<void> {
   const tenantId = secrets.getSecret('$.tenantId', false)
   if (!servicePrincipalId || !servicePrincipalKey || !tenantId) {
     throw new Error(
-      'Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.'
+      'Not all values are present in the creds object. Ensure clientId, clientSecret and tenantId are supplied.'
     )
   }
   core.exportVariable('AZCOPY_SPA_CLIENT_SECRET', servicePrincipalKey)
