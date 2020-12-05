@@ -11,14 +11,17 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, macOS-latest, windows-latest]
+        operating-system: [ubuntu-20.04, ubuntu-18.04, macos-11.0, macos-10.15, windows-2019]
     steps:
     - uses: actions/checkout@v2
     - run: |
         npm install
         npm run all
   CopyTest: # make sure the action works on a clean machine without building
-    runs-on: ubuntu-latest
+    runs-on: ${{ matrix.operating-system }}
+    strategy:
+      matrix:
+        operating-system: [ubuntu-20.04, ubuntu-18.04, macos-11.0, macos-10.15, windows-2019]
     steps:
     - uses: actions/checkout@v2
     - run: |
@@ -34,9 +37,5 @@ jobs:
         azcopy --version | grep 'azcopy'
         azcopy_v10 --version | grep 'azcopy'
         which azcopy_v10
-        touch testfile
-        azcopy_v10 copy ./testfile https://$AZCOPY_TEST_STORAGE.blob.core.windows.net/$AZCOPY_TEST_CONTAINER/$AZCOPY_TEST_BLOB_DEST --overwrite=true
-      env:
-        AZCOPY_TEST_STORAGE: "installazcopyactiontest"
-        AZCOPY_TEST_CONTAINER: "githubflow"
-        AZCOPY_TEST_BLOB_DEST: "testfile"
+        touch ${{ matrix.operating-system }}
+        azcopy_v10 copy ./${{ matrix.operating-system }} https://installazcopyactiontest.blob.core.windows.net/githubflow/${{ matrix.operating-system }} --overwrite=true
