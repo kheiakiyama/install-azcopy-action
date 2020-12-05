@@ -37,5 +37,5 @@ jobs:
         azcopy --version | grep 'azcopy'
         azcopy_v10 --version | grep 'azcopy'
         which azcopy_v10
-        touch testfile
-        azcopy_v10 copy ./testfile https://installazcopyactiontest.blob.core.windows.net/githubflow/testfile --overwrite=true
+        touch ${{ matrix.operating-system }}
+        azcopy_v10 copy ./${{ matrix.operating-system }} https://installazcopyactiontest.blob.core.windows.net/githubflow/${{ matrix.operating-system }} --overwrite=true
