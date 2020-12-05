@@ -46,11 +46,14 @@ export async function installAzCopy(version: string): Promise<string> {
 }
 
 const IS_WINDOWS = process.platform === 'win32'
+const IS_MAC = process.platform === 'darwin'
 
 // https://docs.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-v10
 function getDownloadUrl(): string {
   if (IS_WINDOWS) {
     return 'https://aka.ms/downloadazcopy-v10-windows'
+  } else if (IS_MAC) {
+    return 'https://aka.ms/downloadazcopy-v10-mac'
   } else {
     return 'https://aka.ms/downloadazcopy-v10-linux'
   }
