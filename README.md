@@ -33,7 +33,6 @@ How to create Azure credentials?
 
 install-azcopy-action is tested below.
 - ubuntu-latest
-- macOS-latest
 - windows-latest
 
 See [develop-references.yml](develop-references.yml)
