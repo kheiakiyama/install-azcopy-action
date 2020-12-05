@@ -34,7 +34,7 @@ How to create Azure credentials?
 install-azcopy-action is tested below.
 - ubuntu-20.04
 - ubuntu-18.04(ubuntu-latest)
-- ubuntu-16.04
+- ~~ubuntu-16.04~~
 - macos-11.0
 - macos-10.15(macos-latest)
 - windows-2019(windows-latest)
