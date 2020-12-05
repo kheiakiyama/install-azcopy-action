@@ -38,6 +38,7 @@ jobs:
         azcopy_v10 --version | grep 'azcopy'
         which azcopy_v10
         touch testfile
+        echo https://$AZCOPY_TEST_STORAGE.blob.core.windows.net/$AZCOPY_TEST_CONTAINER/$AZCOPY_TEST_BLOB_DEST
         azcopy_v10 copy ./testfile https://$AZCOPY_TEST_STORAGE.blob.core.windows.net/$AZCOPY_TEST_CONTAINER/$AZCOPY_TEST_BLOB_DEST --overwrite=true
       env:
         AZCOPY_TEST_STORAGE: "installazcopyactiontest"
