@@ -50,14 +50,10 @@ See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/R
 
 Actions are run from GitHub repos.  We will create a releases branch and only checkin production modules (core in this case). 
 
-Comment out node_modules in .gitignore and create a releases/v1 branch
-```bash
-# comment out in distribution branches
-# node_modules/
-```
+Use linux or Mac environment instead of windows.
 
 ```bash
-$ git checkout releases/v1
+$ git checkout -b releases/v1
 $ npm install
 $ npm prune --production
 $ git add node_modules

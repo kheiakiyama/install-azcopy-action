@@ -32,8 +32,14 @@ How to create Azure credentials?
 # Develop
 
 install-azcopy-action is tested below.
-- ubuntu-latest
-- macOS-latest
-- windows-latest
+- ubuntu-20.04
+- ubuntu-18.04(ubuntu-latest)
+- ~~ubuntu-16.04~~
+- macos-11.0
+- macos-10.15(macos-latest)
+- windows-2019(windows-latest)
+
+[GitHub - Supported runners](https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources)
+If you need to add another environment, please post a issue.
 
 See [develop-references.yml](develop-references.yml)
