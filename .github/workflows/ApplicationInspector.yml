@@ -1,0 +1,19 @@
+name: "ApplicationInspector"
+on:
+  pull_request:
+  push:
+    branches:
+      - master
+
+jobs:
+  incpect:
+    runs-on: ubuntu-18.04
+    steps:
+    - uses: actions/checkout@v2
+    - uses: microsoft/ApplicationInspector-Action@v1
+      with:
+        arguments: -t
+    - uses: actions/upload-artifact@v2
+      with:
+          name: AppInspectorResults
+          path: AppInspectorResults.json
