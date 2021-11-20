@@ -29,7 +29,8 @@
     "@actions/core": "^1.2.6",
     "@actions/io": "^1.0.2",
     "@actions/tool-cache": "^1.6.1",
-    "actions-secret-parser": "^1.0.3"
+    "actions-secret-parser": "^1.0.3",
+    "underscore": "^1.12.1"
   },
   "devDependencies": {
     "@types/jest": "^26.0.19",
