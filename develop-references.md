@@ -53,7 +53,10 @@ Actions are run from GitHub repos.  We will create a releases branch and only ch
 Use linux or Mac environment instead of windows.
 
 ```bash
-$ git checkout -b releases/v1
+$ git fetch
+$ git checkout -b master origin/master
+$ git checkout -b releases/v1 origin/releases/v1
+$ git merge master
 $ npm install
 $ npm prune --production
 $ git add node_modules
