@@ -3,7 +3,7 @@ description: 'Install azcopy and add it to PATH'
 author: 'kheiakiyama'
 inputs:
   version:
-    description: 'azcopy version to download. (currently can set `v10` only'
+    description: 'azcopy version to download. (currently can set `v10` only)'
     default: 'v10'
   creds:
     description: 'Paste output of `az ad sp create-for-rbac` as value of secret variable: AZURE_CREDENTIALS'
@@ -11,5 +11,5 @@ branding:
   icon: 'triangle'  
   color: 'blue'
 runs:
-  using: 'node12'
+  using: 'node16'
   main: 'dist/index.js'
