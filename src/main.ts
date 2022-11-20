@@ -15,7 +15,7 @@ async function run(): Promise<void> {
   }
   const creds = core.getInput('creds', {required: false})
   if (creds === '') {
-    core.debug('creds is not difined.')
+    core.debug('creds is not defined.')
     return
   }
   const secrets = new SecretParser(creds, FormatType.JSON)
