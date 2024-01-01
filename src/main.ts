@@ -10,7 +10,11 @@ async function run(): Promise<void> {
     const version = core.getInput('version', {required: true})
     azcopyPath = await installer.installAzCopy(version)
   } catch (error) {
-    core.setFailed(error.message)
+    if (typeof error === 'string') {
+      core.setFailed(error)
+    } else if (error instanceof Error) {
+      core.setFailed(error.message)
+    }
     return
   }
   const creds = core.getInput('creds', {required: false})
@@ -36,7 +40,11 @@ async function run(): Promise<void> {
     )
   } catch (error) {
     core.error('Login failed. Please check the credentials.')
-    core.setFailed(error.message)
+    if (typeof error === 'string') {
+      core.setFailed(error)
+    } else if (error instanceof Error) {
+      core.setFailed(error.message)
+    }
   }
 }
 

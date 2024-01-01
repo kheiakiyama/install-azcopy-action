@@ -1,5 +1,10 @@
 These documents are copied from [typescript-action](https://github.com/actions/typescript-action/blob/master/README.md).
 
+## requirements
+- node: v16.20.2
+- npm: 8.19.4
+- typescript: 4.9.5
+
 ## Code in Master
 
 Install the dependencies  
