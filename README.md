@@ -32,12 +32,10 @@ How to create Azure credentials?
 # Develop
 
 install-azcopy-action is tested below.
-- ubuntu-22.04
-- ubuntu-20.04(ubuntu-latest)
-- ubuntu-18.04
-- macos-12.0
-- macos-11.0(macos-latest)
-- macos-10.15
+- ubuntu-22.04(ubuntu-latest)
+- ubuntu-20.04
+- macos-12.0(macos-latest)
+- macos-11.0
 - windows-2022(windows-latest)
 - windows-2019
 
