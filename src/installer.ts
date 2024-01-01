@@ -12,8 +12,11 @@ export async function installAzCopy(version: string): Promise<string> {
   try {
     downloadPath = await tc.downloadTool(downloadUrl)
   } catch (error) {
-    core.debug(error)
-
+    if (typeof error === 'string') {
+      core.debug(error)
+    } else if (error instanceof Error) {
+      core.debug(error.message)
+    }
     throw new Error(`Failed to download version ${version}: ${error}`)
   }
   const extPath = IS_WINDOWS
