@@ -23,7 +23,9 @@ jobs:
         uses: actions/setup-node@v2
 
       - name: Install deps and build
-        run: npm run all
+        run: |
+          npm install
+          npm run all
       # Compile dist/index.js and bundle with action.yml
       # Force push major and minor tags, e.g. v1, v1.0
       # See documentation: https://github.com/JasonEtco/build-and-tag-action
