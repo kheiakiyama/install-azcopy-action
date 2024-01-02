@@ -1,6 +1,6 @@
 These documents are copied from [typescript-action](https://github.com/actions/typescript-action/blob/master/README.md).
 
-## requirements
+## Requirements
 - node: v16.20.2
 - npm: 8.19.4
 - typescript: 4.9.5
@@ -29,68 +29,21 @@ $ npm test
 ...
 ```
 
-## Change the Code
+## How to publish
 
-Most toolkit and CI/CD operations involve async operations so the action is run in an async function.
-
-```javascript
-import * as core from '@actions/core';
-...
-
-async function run() {
-  try { 
-      ...
-  } 
-  catch (error) {
-    core.setFailed(error.message);
-  }
-}
-
-run()
+1. Make a release from `master` branch.  
+(This repository intentionaly include `dist/` directory. It is used by users.)  
+Write description about changes.  
+Determine version name as `v(x.x.x)`.
+2. Update `v(x)` tag for compatibility or create `v(x)` major version tag with following commands.
 ```
-
-See the [toolkit documentation](https://github.com/actions/toolkit/blob/master/README.md#packages) for the various packages.
-
-## Publish to a distribution branch
-
-Actions are run from GitHub repos.  We will create a releases branch and only checkin production modules (core in this case). 
-
-Use linux or Mac environment instead of windows.
-
-```bash
-$ git fetch
-$ git checkout -b master origin/master
-$ git checkout -b releases/v1 origin/releases/v1
-$ git merge master
-$ npm install
-$ npm prune --production
-$ git add node_modules
-$ git commit -a -m "prod dependencies"
-$ git push origin releases/v1
+git tag -fa v1 -m "Update v1 tag"
+git push origin v1 --force
 ```
 
 Your action is now published! :rocket: 
 
+Try to test v1 on your github action like [this Action](https://github.com/kheiakiyama/kheiakiyama.github.com/actions/workflows/deploy-blob.yml).  
+
+
 See the [versioning documentation](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md)
-
-## Validate
-
-You can now validate the action by referencing the releases/v1 branch
-
-```yaml
-uses: actions/typescript-action@releases/v1
-with:
-  milliseconds: 1000
-```
-
-See the [actions tab](https://github.com/actions/javascript-action/actions) for runs of this action! :rocket:
-
-## Usage:
-
-After testing you can [create a v1 tag](https://github.com/actions/toolkit/blob/master/docs/action-versioning.md) to reference the stable and tested action
-
-```yaml
-uses: actions/typescript-action@v1
-with:
-  milliseconds: 1000
-```
