@@ -1,6 +1,7 @@
 # install-azcopy-action
 
-<a href="https://github.com/kheiakiyama/install-azcopy-action/actions"><img alt="install-azcopy-action status" src="https://github.com/kheiakiyama/install-azcopy-action/workflows/build-test/badge.svg"></a>
+<a href="https://github.com/kheiakiyama/install-azcopy-action/actions"><img alt="install-azcopy-action status" src="https://github.com/kheiakiyama/install-azcopy-action/actions/workflows/test.yml/badge.svg"></a>
+<a href="https://img.shields.io/github/v/release/kheiakiyama/install-azcopy-action"><img alt="release" src="https://img.shields.io/github/v/release/kheiakiyama/install-azcopy-action"></a>
 
 # Usage
 
