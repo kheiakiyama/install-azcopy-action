@@ -1,5 +1,10 @@
 These documents are copied from [typescript-action](https://github.com/actions/typescript-action/blob/master/README.md).
 
+## requirements
+- node: v16.20.2
+- npm: 8.19.4
+- typescript: 4.9.5
+
 ## Code in Master
 
 Install the dependencies  
@@ -53,7 +58,10 @@ Actions are run from GitHub repos.  We will create a releases branch and only ch
 Use linux or Mac environment instead of windows.
 
 ```bash
-$ git checkout -b releases/v1
+$ git fetch
+$ git checkout -b master origin/master
+$ git checkout -b releases/v1 origin/releases/v1
+$ git merge master
 $ npm install
 $ npm prune --production
 $ git add node_modules

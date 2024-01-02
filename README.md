@@ -1,6 +1,7 @@
 # install-azcopy-action
 
-<a href="https://github.com/kheiakiyama/install-azcopy-action/actions"><img alt="install-azcopy-action status" src="https://github.com/kheiakiyama/install-azcopy-action/workflows/build-test/badge.svg"></a>
+<a href="https://github.com/kheiakiyama/install-azcopy-action/actions"><img alt="install-azcopy-action status" src="https://github.com/kheiakiyama/install-azcopy-action/actions/workflows/test.yml/badge.svg"></a>
+<a href="https://img.shields.io/github/v/release/kheiakiyama/install-azcopy-action"><img alt="release" src="https://img.shields.io/github/v/release/kheiakiyama/install-azcopy-action"></a>
 
 # Usage
 
@@ -29,15 +30,16 @@ This credentials feature is for sharing same credentials with [azure-login](http
 How to create Azure credentials?  
 -> Please check [azure-login page](https://github.com/marketplace/actions/azure-login#configure-azure-credentials).
 
+install-azcopy-action only support authorize with a service principal using a lient secret.  
+https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-azure-active-directory#authorize-a-service-principal-by-using-a-client-secret
+
 # Develop
 
 install-azcopy-action is tested below.
-- ubuntu-22.04
-- ubuntu-20.04(ubuntu-latest)
-- ubuntu-18.04
-- macos-12.0
-- macos-11.0(macos-latest)
-- macos-10.15
+- ubuntu-22.04(ubuntu-latest)
+- ubuntu-20.04
+- macos-12.0(macos-latest)
+- macos-11.0
 - windows-2022(windows-latest)
 - windows-2019
 
