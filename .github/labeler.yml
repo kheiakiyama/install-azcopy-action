@@ -1,0 +1,10 @@
+source:
+  - src/**/*
+action:
+  - action.yml
+tests:
+  - __tests__/**/*
+gha:
+  - .github/workflows/*
+documentation:
+  - '*.md'
