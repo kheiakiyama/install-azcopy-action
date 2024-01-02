@@ -20,7 +20,7 @@ jobs:
           windows-2019,
         ]
     steps:
-    - uses: actions/checkout@v2
+    - uses: actions/checkout@v4
     - run: |
         node --version
         npm --version
@@ -39,7 +39,7 @@ jobs:
           windows-2019
         ]
     steps:
-    - uses: actions/checkout@v3
+    - uses: actions/checkout@v4
     - run: |
         azcopy --version | grep 'azcopy'
         which azcopy
