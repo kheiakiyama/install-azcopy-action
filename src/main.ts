@@ -1,14 +1,12 @@
 import * as core from '@actions/core'
 import * as installer from './installer'
-import * as exec from '@actions/exec'
 
 import {FormatType, SecretParser} from 'actions-secret-parser'
 
 async function run(): Promise<void> {
-  let azcopyPath = ''
   try {
     const version = core.getInput('version', {required: true})
-    azcopyPath = await installer.installAzCopy(version)
+    await installer.installAzCopy(version)
   } catch (error) {
     if (typeof error === 'string') {
       core.setFailed(error)
@@ -31,21 +29,10 @@ async function run(): Promise<void> {
       'Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.'
     )
   }
+  core.exportVariable('AZCOPY_AUTO_LOGIN_TYPE', 'SPN')
+  core.exportVariable('AZCOPY_SPA_APPLICATION_ID', servicePrincipalId)
   core.exportVariable('AZCOPY_SPA_CLIENT_SECRET', servicePrincipalKey)
-  try {
-    await exec.exec(
-      `"${azcopyPath}" login --service-principal --application-id ${servicePrincipalId} --tenant-id ${tenantId}`,
-      [],
-      {}
-    )
-  } catch (error) {
-    core.error('Login failed. Please check the credentials.')
-    if (typeof error === 'string') {
-      core.setFailed(error)
-    } else if (error instanceof Error) {
-      core.setFailed(error.message)
-    }
-  }
+  core.exportVariable('AZCOPY_TENANT_ID', tenantId)
 }
 
 run()
