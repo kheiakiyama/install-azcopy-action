@@ -1,8 +1,8 @@
 These documents are copied from [typescript-action](https://github.com/actions/typescript-action/blob/master/README.md).
 
 ## Requirements
-- node: v16.20.2
-- npm: 8.19.4
+- node: v20.11.1
+- npm: 10.2.4
 - typescript: 4.9.5
 
 ## Code in Master
