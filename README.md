@@ -30,7 +30,7 @@ This credentials feature is for sharing same credentials with [azure-login](http
 How to create Azure credentials?  
 -> Please check [azure-login page](https://github.com/marketplace/actions/azure-login#configure-azure-credentials).
 
-install-azcopy-action only support authorize with a service principal using a lient secret.  
+install-azcopy-action only support authorize with a service principal using a client secret.  
 https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-azure-active-directory#authorize-a-service-principal-by-using-a-client-secret
 
 # Develop
