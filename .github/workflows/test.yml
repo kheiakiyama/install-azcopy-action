@@ -12,12 +12,16 @@ jobs:
     strategy:
       matrix:
         operating-system: [
+          ubuntu-24.04,
           ubuntu-22.04,
-          ubuntu-20.04,
-          macos-12,
-          macos-11.0,
+          ubuntu-slim,
+          macos-26,
+          macos-15-intel,
+          macos-15,
+          macos-14-large,
+          macos-14,
+          windows-2025,
           windows-2022,
-          windows-2019,
         ]
     steps:
     - uses: actions/checkout@v4
@@ -31,12 +35,16 @@ jobs:
     strategy:
       matrix:
         operating-system: [
+          ubuntu-24.04,
           ubuntu-22.04,
-          ubuntu-20.04, 
-          macos-12,
-          macos-11.0, 
+          ubuntu-slim,
+          macos-26,
+          macos-15-intel,
+          macos-15,
+          macos-14-large,
+          macos-14,
+          windows-2025,
           windows-2022,
-          windows-2019
         ]
     steps:
     - uses: actions/checkout@v4
