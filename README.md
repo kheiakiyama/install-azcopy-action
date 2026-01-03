@@ -8,7 +8,7 @@
 ## Basic
 ```
 steps:
-- uses: actions/checkout@v2
+- uses: actions/checkout@v6
 - uses: kheiakiyama/install-azcopy-action@v1
   with:
     version: 'v10'
@@ -18,7 +18,7 @@ steps:
 ## Use with credential
 ```
 steps:
-- uses: actions/checkout@v2
+- uses: actions/checkout@v6
 - uses: kheiakiyama/install-azcopy-action@v1
   with:
     version: 'v10'
@@ -36,12 +36,14 @@ https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-author
 # Develop
 
 install-azcopy-action is tested below.
-- ubuntu-22.04(ubuntu-latest)
-- ubuntu-20.04
-- macos-12.0(macos-latest)
-- macos-11.0
-- windows-2022(windows-latest)
-- windows-2019
+- ubuntu-24.04(ubuntu-latest)
+- ubuntu-22.04
+- ubuntu-slim
+- macos-26
+- macos-15
+- macos-14
+- windows-2025
+- windows-2022
 
 [GitHub - Supported runners](https://docs.github.com/en/free-pro-team@latest/actions/reference/specifications-for-github-hosted-runners#supported-runners-and-hardware-resources)
 If you need to add another environment, please post a issue.
