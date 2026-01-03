@@ -40,9 +40,7 @@ install-azcopy-action is tested below.
 - ubuntu-22.04
 - ubuntu-slim
 - macos-26
-- macos-15-intel
 - macos-15
-- macos-14-large
 - macos-14
 - windows-2025
 - windows-2022
