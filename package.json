@@ -30,7 +30,7 @@
     "@actions/io": "^1.0.2",
     "@actions/tool-cache": "^2.0.1",
     "actions-secret-parser": "^1.0.3",
-    "underscore": "^1.12.1"
+    "underscore": "^1.13.8"
   },
   "devDependencies": {
     "@types/jest": "^26.0.24",
