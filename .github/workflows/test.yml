@@ -1,61 +1,45 @@
-name: Unit Test
-on: # rebuild any PRs and main branch changes
+name: Integration Test
+on:
   pull_request:
   push:
     branches:
       - master
+      - main
       - 'releases/*'
 
 jobs:
-  build: # make sure build/ci work properly
-    runs-on: ${{ matrix.operating-system }}
-    strategy:
-      matrix:
-        operating-system: [
-          ubuntu-24.04,
-          ubuntu-22.04,
-          ubuntu-slim,
-          macos-26,
-          macos-15,
-          macos-14,
-          windows-2025,
-          windows-2022,
-        ]
-    steps:
-    - uses: actions/checkout@v4
-    - run: |
-        node --version
-        npm --version
-        npm install
-        npm run all
   CopyTest: # make sure the action works on a clean machine without building
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [
-          ubuntu-24.04,
-          ubuntu-22.04,
-          ubuntu-slim,
-          macos-26,
-          macos-15,
-          macos-14,
-          windows-2025,
-          windows-2022,
-        ]
+        operating-system:
+          - ubuntu-latest
+          - ubuntu-24.04
+          - ubuntu-22.04
+          - macos-latest
+          - macos-15
+          - macos-14
+          - windows-latest
+          - windows-2025
+          - windows-2022
     steps:
-    - uses: actions/checkout@v4
-    - run: |
-        azcopy --version | grep 'azcopy'
-        which azcopy
-    - uses: ./
-      with: 
-        version: 'v10'
-        creds: ${{ secrets.AZURE_CREDENTIALS }}
-      env:
-        ACTIONS_RUNNER_DEBUG: true
-    - run: |
-        azcopy --version | grep 'azcopy'
-        azcopy_v10 --version | grep 'azcopy'
-        which azcopy_v10
-        touch ${{ matrix.operating-system }}
-        azcopy_v10 copy ./${{ matrix.operating-system }} https://installazcopyactiontest.blob.core.windows.net/githubflow/${{ matrix.operating-system }} --overwrite=true
+      - uses: actions/checkout@v4
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version-file: .node-version
+      - name: Run action
+        uses: ./
+        with:
+          version: 'v10'
+          creds: ${{ secrets.AZURE_CREDENTIALS }}
+        env:
+          ACTIONS_RUNNER_DEBUG: true
+      - name: Verify azcopy installation
+        shell: bash
+        run: |
+          azcopy --version | grep 'azcopy'
+          azcopy_v10 --version | grep 'azcopy'
+          which azcopy_v10
+          touch ${{ matrix.operating-system }}
+          azcopy_v10 copy ./${{ matrix.operating-system }} https://installazcopyactiontest.blob.core.windows.net/githubflow/${{ matrix.operating-system }} --overwrite=true
