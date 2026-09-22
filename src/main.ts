@@ -1,11 +1,10 @@
 import * as core from '@actions/core'
-import * as installer from './installer'
+import { FormatType, SecretParser } from 'actions-secret-parser'
+import * as installer from './installer.js'
 
-import {FormatType, SecretParser} from 'actions-secret-parser'
-
-async function run(): Promise<void> {
+export async function run(): Promise<void> {
   try {
-    const version = core.getInput('version', {required: true})
+    const version = core.getInput('version', { required: true })
     await installer.installAzCopy(version)
   } catch (error) {
     if (typeof error === 'string') {
@@ -15,7 +14,7 @@ async function run(): Promise<void> {
     }
     return
   }
-  const creds = core.getInput('creds', {required: false})
+  const creds = core.getInput('creds', { required: false })
   if (creds === '') {
     core.debug('creds is not defined.')
     return
@@ -34,5 +33,3 @@ async function run(): Promise<void> {
   core.exportVariable('AZCOPY_SPA_CLIENT_SECRET', servicePrincipalKey)
   core.exportVariable('AZCOPY_TENANT_ID', tenantId)
 }
-
-run()

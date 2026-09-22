@@ -1,41 +1,92 @@
-import * as io from '@actions/io'
-import * as fs from 'fs'
-import * as process from 'process'
-import * as path from 'path'
+import { jest } from '@jest/globals'
+import * as core from '../__fixtures__/core.js'
+import * as installer from '../__fixtures__/installer.js'
 
-const tempPath = path.join(__dirname, 'runner', 'temp')
-const cachePath = path.join(__dirname, 'runner', 'cache')
+jest.unstable_mockModule('@actions/core', () => core)
+jest.unstable_mockModule('../src/installer.js', () => installer)
 
-process.env['RUNNER_TEMP'] = tempPath
-process.env['RUNNER_TOOL_CACHE'] = cachePath
+const { run } = await import('../src/main.js')
 
-import * as installer from '../src/installer'
+describe('main.ts', () => {
+  beforeEach(() => {
+    jest.resetAllMocks()
+    installer.installAzCopy.mockResolvedValue('dummy-path')
+  })
 
-const IS_WINDOWS = process.platform === 'win32'
+  it('runs successfully without creds', async () => {
+    core.getInput.mockImplementation((name) => {
+      if (name === 'version') return 'v10'
+      if (name === 'creds') return ''
+      return ''
+    })
 
-describe('installer tests', () => {
-  beforeAll(async () => {
-    await io.rmRF(tempPath)
-    await io.rmRF(cachePath)
-  }, 100000)
+    await run()
 
-  afterAll(async () => {
-    await io.rmRF(tempPath)
-    await io.rmRF(cachePath)
-  }, 100000)
+    expect(installer.installAzCopy).toHaveBeenCalledWith('v10')
+    expect(core.setFailed).not.toHaveBeenCalled()
+    expect(core.exportVariable).not.toHaveBeenCalled()
+  })
 
-  it('Getting azcopy is installed', async () => {
-    const azCopyPath = await installer.installAzCopy('v10')
-    expect(fs.existsSync(azCopyPath)).toBe(true)
-  }, 100000)
+  it('sets failed when installer throws', async () => {
+    installer.installAzCopy.mockRejectedValue(new Error('Download failed'))
+    core.getInput.mockImplementation((name) => {
+      if (name === 'version') return 'v10'
+      return ''
+    })
 
-  it('Unsupported version raise error', async () => {
-    let thrown = false
-    try {
-      await installer.installAzCopy('v7')
-    } catch {
-      thrown = true
+    await run()
+
+    expect(core.setFailed).toHaveBeenCalledWith('Download failed')
+    expect(core.exportVariable).not.toHaveBeenCalled()
+  })
+
+  it('exports variables when valid creds are provided', async () => {
+    const credsObj = {
+      clientId: 'dummy-client-id',
+      clientSecret: 'dummy-client-secret',
+      tenantId: 'dummy-tenant-id',
+      subscriptionId: 'dummy-sub-id'
     }
-    expect(thrown).toBe(true)
-  }, 100000)
+
+    core.getInput.mockImplementation((name) => {
+      if (name === 'version') return 'v10'
+      if (name === 'creds') return JSON.stringify(credsObj)
+      return ''
+    })
+
+    await run()
+
+    expect(core.exportVariable).toHaveBeenCalledWith(
+      'AZCOPY_AUTO_LOGIN_TYPE',
+      'SPN'
+    )
+    expect(core.exportVariable).toHaveBeenCalledWith(
+      'AZCOPY_SPA_APPLICATION_ID',
+      'dummy-client-id'
+    )
+    expect(core.exportVariable).toHaveBeenCalledWith(
+      'AZCOPY_SPA_CLIENT_SECRET',
+      'dummy-client-secret'
+    )
+    expect(core.exportVariable).toHaveBeenCalledWith(
+      'AZCOPY_TENANT_ID',
+      'dummy-tenant-id'
+    )
+  })
+
+  it('throws error when creds is missing required fields', async () => {
+    const invalidCreds = {
+      clientId: 'dummy-client-id'
+    }
+
+    core.getInput.mockImplementation((name) => {
+      if (name === 'version') return 'v10'
+      if (name === 'creds') return JSON.stringify(invalidCreds)
+      return ''
+    })
+
+    await expect(run()).rejects.toThrow(
+      'Not all values are present in the creds object.'
+    )
+  })
 })

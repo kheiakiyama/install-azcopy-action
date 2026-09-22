@@ -6,6 +6,7 @@
 # Usage
 
 ## Basic
+
 ```
 steps:
 - uses: actions/checkout@v6
@@ -16,6 +17,7 @@ steps:
 ```
 
 ## Use with credential
+
 ```
 steps:
 - uses: actions/checkout@v6
@@ -26,16 +28,20 @@ steps:
 - run: azcopy_v10 --source {SOURCE} --destination {DEST} --recursive --set-content-type
 ```
 
-This credentials feature is for sharing same credentials with [azure-login](https://github.com/marketplace/actions/azure-login).  
+This credentials feature is for sharing same credentials with
+[azure-login](https://github.com/marketplace/actions/azure-login).  
 How to create Azure credentials?  
--> Please check [azure-login page](https://github.com/marketplace/actions/azure-login#configure-azure-credentials).
+-> Please check
+[azure-login page](https://github.com/marketplace/actions/azure-login#configure-azure-credentials).
 
-install-azcopy-action only support authorize with a service principal using a client secret.  
+install-azcopy-action only support authorize with a service principal using a
+client secret.  
 https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azcopy-authorize-azure-active-directory#authorize-a-service-principal-by-using-a-client-secret
 
 # Develop
 
 install-azcopy-action is tested below.
+
 - ubuntu-24.04(ubuntu-latest)
 - ubuntu-22.04
 - ubuntu-slim
