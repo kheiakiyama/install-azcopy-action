@@ -24,6 +24,7 @@ set -e
 # 8. Point separate major release tag (e.g. v1, v2) to the new release
 # 9. Push the new tags (with commits, if any) to remote
 # 10. If this is a major release, create a 'releases/v#' branch and push
+# 11. Create a GitHub Release using gh CLI (if available)
 #
 # Usage:
 #
@@ -45,7 +46,7 @@ BOLD_UNDERLINED='\033[1;4m'
 BOLD='\033[1m'
 
 # 1. Retrieve the latest release tag
-if ! latest_tag=$(git describe --abbrev=0 --match="$semver_tag_glob"); then
+if ! latest_tag=$(git describe --tags --abbrev=0 --match="$semver_tag_glob"); then
 	# There are no existing release tags
 	echo -e "No tags found (yet) - Continue to create and push your first tag"
 	latest_tag="[unknown]"
@@ -78,7 +79,7 @@ if [[ ! ($YN == "y" || $YN == "Y") ]]; then
 fi
 
 # 6. Tag a new release
-git tag "$new_tag" --annotate --message "$new_tag Release"
+git tag "$new_tag" --force --annotate --message "$new_tag Release"
 echo -e "Tagged: ${BOLD_GREEN}$new_tag${OFF}"
 
 # 7. Set 'is_major_release' variable
@@ -101,7 +102,7 @@ fi
 # 8. Point separate major release tag (e.g. v1, v2) to the new release
 if [ $is_major_release = 'yes' ]; then
 	# Create a new major version tag and point it to this release
-	git tag "$new_major_release_tag" --annotate --message "$new_major_release_tag Release"
+	git tag "$new_major_release_tag" --force --annotate --message "$new_major_release_tag Release"
 	echo -e "New major version tag: ${BOLD_GREEN}$new_major_release_tag${OFF}"
 else
 	# Update the major version tag to point it to this release
@@ -111,6 +112,7 @@ fi
 
 # 9. Push the new tags (with commits, if any) to remote
 git push --follow-tags
+git push $git_remote "$new_tag" --force
 
 if [ $is_major_release = 'yes' ]; then
 	# New major version tag is pushed with the '--follow-tags' flags
@@ -127,6 +129,16 @@ if [ $is_major_release = 'yes' ]; then
 	echo -e "Branch: ${BOLD_BLUE}releases/$new_major_release_tag${OFF} created from ${BOLD_BLUE}$new_major_release_tag${OFF} tag"
 	git push --set-upstream $git_remote "releases/$new_major_release_tag"
 	echo -e "Branch: ${BOLD_GREEN}releases/$new_major_release_tag${OFF} pushed to remote"
+fi
+
+# 11. Create a GitHub Release using gh CLI (if available)
+if command -v gh &> /dev/null; then
+	echo -e "Creating GitHub Release for ${BOLD_BLUE}$new_tag${OFF}..."
+	if gh release create "$new_tag" --title "$new_tag" --generate-notes --verify-tag; then
+		echo -e "GitHub Release: ${BOLD_GREEN}$new_tag${OFF} created successfully"
+	else
+		echo -e "${BOLD_RED}Failed to create GitHub Release. You can create it manually with: gh release create $new_tag --generate-notes${OFF}"
+	fi
 fi
 
 # Completed
