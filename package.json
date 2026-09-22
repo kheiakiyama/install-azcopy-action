@@ -38,8 +38,7 @@
   "dependencies": {
     "@actions/core": "^3.0.0",
     "@actions/io": "^3.0.2",
-    "@actions/tool-cache": "^4.0.0",
-    "actions-secret-parser": "^1.0.3"
+    "@actions/tool-cache": "^4.0.0"
   },
   "devDependencies": {
     "@eslint/compat": "^2.0.2",
@@ -47,7 +46,6 @@
     "@eslint/js": "^10.0.1",
     "@jest/globals": "^30.2.0",
     "@rollup/plugin-commonjs": "^29.0.0",
-    "@rollup/plugin-json": "^6.1.0",
     "@rollup/plugin-node-resolve": "^16.0.3",
     "@rollup/plugin-typescript": "^12.3.0",
     "@types/jest": "^30.0.0",

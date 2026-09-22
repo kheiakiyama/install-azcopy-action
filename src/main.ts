@@ -1,5 +1,4 @@
 import * as core from '@actions/core'
-import { FormatType, SecretParser } from 'actions-secret-parser'
 import * as installer from './installer.js'
 
 export async function run(): Promise<void> {
@@ -14,20 +13,38 @@ export async function run(): Promise<void> {
     }
     return
   }
+
   const creds = core.getInput('creds', { required: false })
   if (creds === '') {
     core.debug('creds is not defined.')
     return
   }
-  const secrets = new SecretParser(creds, FormatType.JSON)
-  const servicePrincipalId = secrets.getSecret('$.clientId', false)
-  const servicePrincipalKey = secrets.getSecret('$.clientSecret', true)
-  const tenantId = secrets.getSecret('$.tenantId', false)
-  if (!servicePrincipalId || !servicePrincipalKey || !tenantId) {
+
+  let credsObj: Record<string, unknown>
+  try {
+    credsObj = JSON.parse(creds)
+  } catch {
+    throw new Error('Content is not a valid JSON object')
+  }
+
+  const servicePrincipalId = credsObj.clientId
+  const servicePrincipalKey = credsObj.clientSecret
+  const tenantId = credsObj.tenantId
+
+  if (
+    typeof servicePrincipalId !== 'string' ||
+    typeof servicePrincipalKey !== 'string' ||
+    typeof tenantId !== 'string' ||
+    !servicePrincipalId ||
+    !servicePrincipalKey ||
+    !tenantId
+  ) {
     throw new Error(
       'Not all values are present in the creds object. Ensure clientId, clientSecret, tenantId and subscriptionId are supplied.'
     )
   }
+
+  core.setSecret(servicePrincipalKey)
   core.exportVariable('AZCOPY_AUTO_LOGIN_TYPE', 'SPN')
   core.exportVariable('AZCOPY_SPA_APPLICATION_ID', servicePrincipalId)
   core.exportVariable('AZCOPY_SPA_CLIENT_SECRET', servicePrincipalKey)

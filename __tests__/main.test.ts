@@ -25,6 +25,7 @@ describe('main.ts', () => {
     expect(installer.installAzCopy).toHaveBeenCalledWith('v10')
     expect(core.setFailed).not.toHaveBeenCalled()
     expect(core.exportVariable).not.toHaveBeenCalled()
+    expect(core.setSecret).not.toHaveBeenCalled()
   })
 
   it('sets failed when installer throws', async () => {
@@ -40,7 +41,7 @@ describe('main.ts', () => {
     expect(core.exportVariable).not.toHaveBeenCalled()
   })
 
-  it('exports variables when valid creds are provided', async () => {
+  it('exports variables and masks secret when valid creds are provided', async () => {
     const credsObj = {
       clientId: 'dummy-client-id',
       clientSecret: 'dummy-client-secret',
@@ -56,6 +57,7 @@ describe('main.ts', () => {
 
     await run()
 
+    expect(core.setSecret).toHaveBeenCalledWith('dummy-client-secret')
     expect(core.exportVariable).toHaveBeenCalledWith(
       'AZCOPY_AUTO_LOGIN_TYPE',
       'SPN'
@@ -72,6 +74,16 @@ describe('main.ts', () => {
       'AZCOPY_TENANT_ID',
       'dummy-tenant-id'
     )
+  })
+
+  it('throws error when creds is invalid JSON', async () => {
+    core.getInput.mockImplementation((name) => {
+      if (name === 'version') return 'v10'
+      if (name === 'creds') return '{ invalid json'
+      return ''
+    })
+
+    await expect(run()).rejects.toThrow('Content is not a valid JSON object')
   })
 
   it('throws error when creds is missing required fields', async () => {
