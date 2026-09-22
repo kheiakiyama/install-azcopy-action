@@ -1,10 +1,17 @@
 source:
-  - src/**/*
+  - changed-files:
+      - any-glob-to-any-file: 'src/**/*'
 action:
-  - action.yml
+  - changed-files:
+      - any-glob-to-any-file: 'action.yml'
 tests:
-  - __tests__/**/*
+  - changed-files:
+      - any-glob-to-any-file:
+          - '__tests__/**/*'
+          - '__fixtures__/**/*'
 gha:
-  - .github/workflows/*
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
 documentation:
-  - '*.md'
+  - changed-files:
+      - any-glob-to-any-file: '**/*.md'
